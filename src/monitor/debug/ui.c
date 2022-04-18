@@ -39,6 +39,19 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_info(char *args) {
+    if (args != NULL && strcmp(args, "register") != 0 && strcmp(args, "r") != 0) {
+        printf("Undefined info command: \"%s\"\n", args);
+        return 0;
+    }
+    isa_reg_display();
+    return 0;
+}
+
+static int cmd_x(char *args) {
+    return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -47,8 +60,8 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
-  /* TODO: Add more commands */
+  { "info", "Print register's infomation", cmd_info},
+  {"x", "Print memory", cmd_x}
 
 };
 

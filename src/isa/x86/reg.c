@@ -42,6 +42,10 @@ void reg_test() {
 }
 
 void isa_reg_display() {
+    for (int i=0;i<8;i++) {
+        printf("%-5s 0x%-10x   %u\n",regsl[i], (unsigned)reg_l(i), (unsigned)reg_l(i));
+    }
+    printf("pc    0x%-10x   %u\n", (unsigned)cpu.pc, (unsigned)cpu.pc);
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
