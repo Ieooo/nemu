@@ -1,4 +1,5 @@
 #include <isa.h>
+#include <memory/paddr.h>
 #include "expr.h"
 #include "watchpoint.h"
 
@@ -49,7 +50,43 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+  paddr_t addr = atoi(args);
+  if (addr < 0 || addr >= PMEM_SIZE) {
+    printf("invalid memory addr [%s]\n", args);
     return 0;
+  }
+  word_t data = paddr_read(addr, 2);
+  printf("%x\n", data);
+  return 0;
+}
+
+static int cmd_si(char *args) {
+  if (!args) {
+    return 0;
+  }
+
+  int steps = atoi(args);
+  if (steps <= 0 ) {
+    printf("invalid args \"%s\"\n", args);
+    return 0;
+  }
+
+  for(int i=0; i<steps; i++) {
+    cpu_exec(-1);
+  }
+  return 0;
+}
+
+static int cmd_p(char *args) {
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  return 0;
 }
 
 static struct {
@@ -61,7 +98,11 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "info", "Print register's infomation", cmd_info},
-  {"x", "Print memory", cmd_x}
+  {"x", "Print memory", cmd_x},
+  {"si", "exec N step then pause", cmd_si},
+  {"w", "set monitor point", cmd_w},
+  {"d", "delete monitor point", cmd_d},
+  {"p", "calculate expression value", cmd_p}
 
 };
 
