@@ -78,6 +78,14 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_p(char *args) {
+  if (!args) {
+    return 0;
+  }
+  bool success = true;
+  word_t res = expr(args, &success);
+  if (success) {
+    printf("%d\n", res);
+  }
   return 0;
 }
 
